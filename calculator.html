@@ -1,0 +1,225 @@
+<!DOCTYPE html> <!-- Scientific Calculator -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific calculator</title>
+    <link rel="stylesheet" href="calc.css">
+</head>
+
+
+ 
+<body onload="startTime()"> <!-- for the time at the top of the calculator -->
+    <div class="main">
+    <h1 style="font-size: 60px; font-weight: 500; color: darkblue;"><u>Scientific Calculator</u></h1></div>
+    <div class="cal-container">
+        <div class="clock">
+            <p id="time">time goes here</p>
+        </div>
+                <!--Screen -->
+        <div class="display">
+            <input type="text" id="screen" readonly placeholder="0">
+        </div>
+
+                    <!-- Calculator buttons -->
+        <div class="keys">
+
+            <p>
+                <input type="button" value="sin" class="btn btn-sign" onclick="sine()">
+                <input type="button" value="cos" class="btn btn-sign" onclick="cosine()">
+                <input type="button" value="tan" class="btn btn-sign" onclick="tan()">
+                <input type="button" value="asin" class="btn btn-sign" onclick="invsine()">
+                <input type="button" value="acos" class="btn btn-sign" onclick="invcosine()">
+            </p>
+
+
+            <p>
+                <input type="button" value="atan" class="btn btn-sign" onclick="invtan()">
+                <input type="button" value="&prod;" class="btn btn-sign" onclick="press(22/7)">
+                <input type="button" value="ln" class="btn btn-sign" onclick="ln()">
+                <input type="button" value="log" class="btn btn-sign" onclick="log()">
+                <input type="button" value="%" class="btn btn-sign" onclick="percent()">
+            </p>
+
+            <p>
+                <input type="button" value="sqd" class="btn btn-sign" onclick="square()">
+                <input type="button" value="cube" class="btn btn-sign" onclick="cube()">
+                <input type="button" value="√" class="btn btn-sign" onclick="sqrt()">
+                <input type="button" value="(" class="btn btn-sign" onclick="press('(')">
+                <input type="button" value=")" class="btn btn-sign" onclick="press(')')">
+            </p>
+
+            <p style="margin-top: 30px;">
+                <input type="button" value="7" class="btn btn-num" onclick="press(7)">
+                <input type="button" value="8" class="btn btn-num" onclick="press(8)">
+                <input type="button" value="9" class="btn btn-num" onclick="press(9)">
+                <input type="button" value="Del" class="btn btn-red" onclick="backspace()">
+                <input type="button" value="C" class="btn btn-red" onclick="clearScreen('')">
+            </p>
+
+            <p>
+                <input type="button" value="4" class="btn btn-num" onclick="press(4)">
+                <input type="button" value="5" class="btn btn-num" onclick="press(5)">
+                <input type="button" value="6" class="btn btn-num" onclick="press(6)">
+                <input type="button" value="x" class="btn btn-opera" onclick="press('*')">
+                <input type="button" value="/" class="btn btn-opera" onclick="press('/')">
+            </p>
+
+            <p>
+                <input type="button" value="1" class="btn btn-num" onclick="press(1)">
+                <input type="button" value="2" class="btn btn-num" onclick="press(2)">
+                <input type="button" value="3" class="btn btn-num" onclick="press(3)">
+                <input type="button" value="+" class="btn btn-opera" onclick="press('+')">
+                <input type="button" value="-" class="btn btn-opera" onclick="press('-')">
+            </p>
+
+            <p>
+                <input type="button" value="0" class="btn btn-num" onclick="press(0)">
+                <input type="button" value="±" class="btn btn-opera" onclick="plusminus()">
+                <input type="button" value="." class="btn btn-num" onclick="press('.')">
+                <input type="button" value="Exp" class="btn btn-opera" onclick="Exp()">
+                <input type="button" value="=" class="btn btn-opera" onclick="calculate()">
+            </p>
+        </div>
+
+    </div>
+
+    <script> 
+    function startTime(){ //function to start time
+        var today = new Date();
+        var hour = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+
+         //to check whether it is AM or PM
+
+        if(hour <= 12){
+            hour = hour
+        }else{
+            hour = hour-12;
+        }
+
+        //adding 0 if it is less than 10 
+
+        hour = concatZero(hour);
+        minutes = concatZero(minutes);
+        seconds = concatZero(seconds);
+
+
+        var mode;
+        if(hour < 11){
+            mode  ="AM";
+        }else{
+            mode="PM";
+        }
+        document.getElementById("time").innerHTML = hour + ":" + minutes + ":" + seconds + " " + mode ;
+        setTimeout(startTime, 500)
+    }
+
+
+    function concatZero(value){
+        if(value < 10){
+            value = "0" + value;
+        }
+        return value;
+    }
+
+    //screen
+    let screen = document.getElementById("screen");
+
+//type to screen
+function press(numValue){
+    if(screen.value == 0){
+        screen.value = '';
+    }
+    screen.value += numValue;
+    
+}
+
+//clear screen
+function clearScreen(val){
+    screen.value=val;
+}
+
+//delete key
+function backspace(){
+    const space = screen;
+    screen.value = space.value.substring(0, space.value.length - 1);
+}
+
+//calculate function
+function calculate(){
+    if(screen.value != ''){
+        try{
+        clearScreen(eval(screen.value))
+    }catch(err){
+        clearScreen("Bad Expression")
+    }
+  }
+}
+//sin function
+function sine(){
+    screen.value = Math.sin(screen.value * Math.PI/180);
+}
+//cos function
+function cosine(){
+    screen.value = Math.cos(screen.value * Math.PI/180);
+}
+//tan function
+function tan(){
+    screen.value = Math.tan(screen.value * Math.PI/180);
+}
+//inerse of sin function
+function invsine(){
+    screen.value = Math.asin(screen.value) * (180 / Math.PI);
+}
+//inerse of cos function
+function invcosine(){
+    screen.value = Math.acos(screen.value) * (180 / Math.PI);
+}
+//inerse of tan function
+function invtan(){
+    screen.value = Math.atan(screen.value) * (180 / Math.PI);
+}
+//to find the natural logarithamic function
+function ln(){
+    screen.value =Math.log(screen.value);
+}
+//logarithamic function
+function log(){
+    screen.value =Math.log10(screen.value);
+}
+//for the percentage button
+function percent(){
+    screen.value = (screen.value/100);
+}
+//to find the square of a number
+function square(){
+    screen.value = Math.pow(screen.value,2);
+}
+//to find the cube of a function
+function cube(){
+    screen.value = Math.pow(screen.value,3);
+}
+//to find the square root of a function
+function sqrt(){
+    screen.value = Math.sqrt(screen.value);
+}
+
+
+//function for +/-
+function plusminus(){
+    var x=screen;
+    var y=x.value;
+    y=y*-1;
+    x.value = y;
+}
+
+//function for exponential
+function Exp(){
+    screen.value = Math.pow(10, screen.value)
+}
+
+    </script>
+</body>
+</html>
